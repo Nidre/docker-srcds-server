@@ -4,13 +4,15 @@ FROM ubuntu:18.04
 # for l4d2 & tf2
 RUN dpkg --add-architecture i386;
 RUN apt-get update && \
-    apt-get install -y nano curl gdb gettext-base lib32gcc1 lib32tinfo5 && \
-    apt-get install -y libc6:i386 lib32z1 && \
-    apt-get install -y mailutils postfix wget file bzip2 gzip unzip bsdmainutils python util-linux tmux libstdc++6 libstdc++6:i386 libcurl4-gnutls-dev:i386 && \
+    apt-get install -y nano curl tzdata gdb gettext-base lib32gcc1 lib32tinfo5 libc6:i386 lib32z1 \
+    mailutils postfix wget file bzip2 gzip unzip bsdmainutils python util-linux tmux libstdc++6 libstdc++6:i386 libcurl4-gnutls-dev:i386 && \
     apt-get autoclean && \
     apt-get autoremove && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Add a separate user
 RUN useradd --create-home --home-dir /steam-home --shell /bin/bash --uid 1000 steam \
